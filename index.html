@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Card</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #FF6F61, #FFFFFF);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .card h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        .card p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            gap: 10px;
+        }
+
+        .contact-item img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .contact-item a {
+            color: #FF6F61;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contact-item a:hover {
+            text-decoration: underline;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons img {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .social-icons img:hover {
+            transform: scale(1.1);
+        }
+
+        .social-icons a {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .download-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #FF6F61;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.2s;
+        }
+
+        .download-button:hover {
+            background-color: #E55C50;
+        }
+
+        .popup, .confirm-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            text-align: center;
+            z-index: 10;
+            width: 80%;
+            max-width: 400px;
+            border: 2px solid #FF6F61;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 5;
+        }
+
+        .popup button, .confirm-popup button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .popup .confirm, .confirm-popup .confirm {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .popup .cancel, .confirm-popup .cancel {
+            background-color: #FF6F61;
+            color: white;
+        }
+
+        .confirm-popup .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .confirm-popup .nav-buttons button {
+            width: 45%;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Owen</h1>
+        <p>Consultant</p>
+        <p>MeFan:TWS brand by Mefannnnnnnn Co., Ltd. Visit: <a href="https://mefan-project.web.app/" target="_blank">mefan-project.web.app</a></p>
+        
+        <!-- Phone -->
+        <div class="contact-item">
+            <img src="https://cdn-icons-png.flaticon.com/512/126/126509.png" alt="Phone">
+            <a href="tel:+12137579991">+1 213 757 9991</a>
+        </div>
+
+        <!-- Email -->
+        <div class="contact-item">
+            <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email">
+            <p><a href="#" onclick="sendToGmail()">mefannnnnnnn@gmail.com</a></p>
+        </div>
+
+        <!-- Company -->
+        <div class="contact-item">
+            <img src="https://cdn-icons-png.flaticon.com/512/1239/1239525.png" alt="Company">
+            <p>Mefan Co., Ltd</p>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="social-icons">
+            <a href="https://wa.me/85265891195 target="_blank">
+                <img src="https://cdn-icons-png.flaticon.com/512/124/124034.png" alt="WhatsApp">
+                <span>WhatsApp</span>
+            </a>
+            <a href="https://linkedin.com/" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn">
+                <span>LinkedIn</span>
+            </a>
+        </div>
+
+        <!-- Download vCard button -->
+        <button class="download-button" id="downloadButton" onclick="showPopup()">DOWNLOAD VCARD</button>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+
+    <!-- 一级弹窗 -->
+    <div class="popup" id="popup">
+        <p>How would you like to save the contact?</p>
+        <button class="confirm" onclick="showConfirmEmail()">Save by Email</button>
+        <button class="confirm" onclick="showConfirmDownload()">Save to My Phone</button>
+        <button class="cancel" onclick="closePopup()">Cancel</button>
+    </div>
+
+    <!-- 二级确认弹窗 -->
+    <div class="confirm-popup" id="confirmPopup">
+        <p id="confirmText"></p>
+        <div class="nav-buttons">
+            <button class="cancel" onclick="goBack()">Back</button>
+            <button class="confirm" id="confirmAction">Confirm</button>
+        </div>
+    </div>
+
+    <script>
+        // 自动检测设备并隐藏按钮
+        function isMobile() {
+            return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        }
+        if (isMobile()) {
+            document.getElementById("downloadButton").style.display = "none";
+        }
+
+        // Gmail 邮件功能
+        function sendToGmail() {
+            const recipient = "mefannnnnnnn@gmail.com";
+            const subject = "Inquiry about PoE Products";
+            const body = `
+Dear Oliver Fang,
+
+I am interested in your products/services. Please provide more details.
+
+Best regards,
+[Your Name]
+[Your Contact Information]`;
+
+            const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoUrl;
+        }
+
+        // 显示一级弹窗
+        function showPopup() {
+            document.getElementById("popup").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        // 关闭一级弹窗
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        // 显示确认保存到手机
+        function showConfirmDownload() {
+            closePopup();
+            const confirmPopup = document.getElementById("confirmPopup");
+            confirmPopup.querySelector("#confirmText").innerText = "Do you want to download the vCard to your device?";
+            confirmPopup.querySelector("#confirmAction").onclick = saveToPhone;
+            confirmPopup.style.display = "block";
+        }
+
+        // 显示确认保存到邮件
+        function showConfirmEmail() {
+            closePopup();
+            const confirmPopup = document.getElementById("confirmPopup");
+            confirmPopup.querySelector("#confirmText").innerText = "Do you want to save the contact via email?";
+            confirmPopup.querySelector("#confirmAction").onclick = downloadEmailTemplate;
+            confirmPopup.style.display = "block";
+        }
+
+        // 关闭二级弹窗
+        function closeConfirmPopup() {
+            document.getElementById("confirmPopup").style.display = "none";
+        }
+
+        // 返回上一界面
+        function goBack() {
+            closeConfirmPopup();
+            showPopup();
+        }
+
+        // 保存到手机
+        function saveToPhone() {
+            closeConfirmPopup();
+            const link = document.createElement("a");
+            link.href = "https://forest-fr.github.io/Owen-QR-card sample/Owen-QR-code-for-contact.jpeg";
+            link.download = "Owen-QR-code-for-contact.jpeg";
+            link.click();
+        }
+
+        // 下载邮件模板
+        function downloadEmailTemplate() {
+            const emailContent = `
+From: [Your Email]
+To: mefannnnnnnn@gmail.com
+Subject: Contact Information - Owen
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="simple-boundary"
+
+--simple-boundary
+Content-Type: text/plain; charset="UTF-8"
+
+Dear Owen,
+
+Please find attached my inquiry.
+
+--simple-boundary
+Content-Type: text/vcard; charset="UTF-8"; name="Owen-QR-code-for-contact.jpeg"
+Content-Disposition: attachment; filename="Owen-QR-code-for-contact.jpeg"
+
+BEGIN:VCARD
+VERSION:3.0
+FN:Owen
+TITLE:Consultant
+TEL:+12137579991
+EMAIL:mefannnnnnnn@gmail.com
+ORG:Mefannnnnnnn Co., Ltd
+URL:https://mefan-project.web.app/
+END:VCARD
+
+--simple-boundary
+Content-Type: image/jpeg; name="Owen-QR-code-for-contact.jpeg"
+Content-Disposition: attachment; filename="Owen-QR-code-for-contact.jpeg"
+
+[Binary Data for JPEG File]
+
+--simple-boundary--`;
+            const blob = new Blob([emailContent], { type: "text/plain" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Owen-Contact.eml";
+            link.click();
+        }
+
+        // 键盘 ESC 关闭弹窗
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                closePopup();
+                closeConfirmPopup();
+            }
+        });
+    </script>
+</body>
+</html>
